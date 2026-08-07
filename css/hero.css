@@ -37,7 +37,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 57% top; /* Fix: Changed to 'top' so the image anchors from the top, preventing the heads from being cropped */
+  object-position: 57% top ; /* Fix: Changed to 'top' so the image anchors from the top, preventing the heads from being cropped */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 15%, rgba(0,0,0,0.8) 40%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, transparent 15%, rgba(0,0,0,0.8) 40%, black 60%);
   transform-origin: center center;
