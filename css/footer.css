@@ -270,3 +270,67 @@
   100% { transform: translateX(200%); }
 }
 
+
+
+/* =========================================
+   Footer Coming Soon Banner
+   ========================================= */
+.footer-coming-soon {
+  /* Lighter purple gradient */
+  background: linear-gradient(135deg, #6A1B9A 0%, #8E24AA 100%); 
+  border-radius: 16px;
+  padding: 60px 40px;
+  margin-bottom: 80px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(106, 27, 154, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle light glow inside the box */
+.footer-coming-soon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.coming-soon-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #D8B4FE !important; 
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.coming-soon-desc {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: #C4B5FD !important; 
+  line-height: 1.8;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive tweak for mobile */
+@media (max-width: 768px) {
+  .footer-coming-soon {
+    padding: 40px 20px;
+    margin-bottom: 60px;
+  }
+  
+  .coming-soon-desc {
+    font-size: 1rem;
+  }
+}
