@@ -1,0 +1,618 @@
+/* =========================================
+   1. Fonts & Reset
+   ========================================= */
+
+/* Orvada font removed and replaced with Montserrat globally */
+
+@font-face {
+  font-family: 'Shooket Trial';
+  src: url('../font/Shooket Trial.ttf') format('opentype');
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-color: #F7EEFF !important;
+  position: relative !important;
+  
+  /* Removed global padding-bottom here to fix the gap */
+  
+  /* Sticky Footer Setup */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Pushes footer to the bottom of the page */
+main {
+  flex: 1 0 auto;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* =========================================
+   2. Design Tokens
+   ========================================= */
+:root {
+  --color-bg: #F7EEFF;
+  --color-surface: rgba(106, 27, 154, 0.4);
+  --color-primary: #6A1B9A;
+  --color-bright: #A855F7;
+  --color-lavender: #CE93D8;
+  --color-white: #4A148C;
+  --color-muted: #54445E;
+  --color-accent: #8E44AD;
+  --color-divider: rgba(106, 27, 154, 0.15);
+
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif; /* Updated to Montserrat */
+
+  --container-max: 1440px;
+  --container-padding: 5vw;
+  --section-padding-y: clamp(80px, 12vh, 160px);
+
+  --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================
+   3. Base Typography
+   ========================================= */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #4A148C;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(40px, 5vw, 72px); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; max-width: 650px; }
+h2 { font-size: clamp(34px, 4vw, 54px); font-weight: 800; line-height: 1.05; margin-bottom: 32px; }
+h3, h4, .service-title, .pillar-title, .author-name { font-size: clamp(18px, 1.5vw, 22px); font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+
+p {
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1vw + 0.5rem, 18px);
+  line-height: 1.8;
+  max-width: 620px;
+  color: #54445E;
+}
+
+/* =========================================
+   4. Utilities & Layout
+   ========================================= */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(90px, 10vh, 140px);
+  padding-bottom: clamp(90px, 10vh, 140px);
+}
+
+.text-primary { color: var(--color-primary); }
+.text-bright { color: var(--color-bright) !important; }
+.text-accent { color: var(--color-accent); }
+
+/* =========================================
+   5. Premium Buttons
+   ========================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  padding: 0 30px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary { background-color: #6A1B9A; color: #FFFFFF; }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-primary:hover {
+  background-color: #7B1FA2;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(217, 70, 239, 0.6);
+}
+.btn-primary:hover::after { left: 100%; }
+
+.btn-outline { background-color: transparent; color: #4A148C; border-color: #6A1B9A; }
+.btn-outline:hover { border-color: #6A1B9A; background: #6A1B9A; color: #FFFFFF; }
+
+/* =========================================
+   6. Global Animations
+   ========================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@keyframes floatGlow {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+.hero-glow, .cta-glow, .philosophy-section::before {
+  animation: floatGlow 8s ease-in-out infinite;
+  will-change: transform;
+}
+/* =========================================
+   7. Sticky CTA Bar (Mobile)
+   ========================================= */
+.sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(106, 27, 154, 0.12) !important;
+  z-index: 998;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+.sticky-cta.visible { transform: translateY(0); }
+.sticky-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+.sticky-call { flex: 0 0 56px; background: rgba(106, 27, 154, 0.1) !important; color: #4A148C !important; border-radius: 10px; }
+.sticky-call:hover { background: rgba(106, 27, 154, 0.2) !important; }
+.sticky-whatsapp { flex: 0 0 56px; background: rgba(37, 211, 102, 0.15); color: #25d366; border-radius: 10px; }
+.sticky-whatsapp:hover { background: rgba(37, 211, 102, 0.25); }
+.sticky-book { flex: 1; background: #6A1B9A; color: #FFFFFF; border-radius: 10px; }
+.sticky-book:hover { background: #7B1FA2; }
+
+@media (min-width: 900px) {
+  .sticky-cta { display: none; }
+}
+
+/* Fix: Do NOT add padding to body. Add it to the footer instead so there is no gap below the page */
+@media (max-width: 900px) {
+  .footer {
+    padding-bottom: 90px !important; /* Leaves room for sticky bar without creating a gap */
+  }
+}
+
+/* =========================================
+   8. UI & Background Overrides
+   ========================================= */
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  top: -15% !important;
+  left: -15% !important;
+  width: 130% !important;
+  height: 130% !important;
+  z-index: -2 !important;
+  background-color: #F7EEFF !important;
+  background-image: 
+      radial-gradient(circle at 15% 20%, #F7EEFF 0%, transparent 40%),
+      radial-gradient(circle at 85% 15%, #F1DFFF 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, #E5CFFF 0%, transparent 50%),
+      radial-gradient(circle at 25% 80%, #C694FF 0%, transparent 45%),
+      radial-gradient(circle at 80% 75%, #8B45E8 0%, transparent 40%),
+      radial-gradient(circle at 50% 100%, #6F2FC8 0%, transparent 50%),
+      linear-gradient(135deg, #F7EEFF 0%, #D7B6FF 50%, #A96EF5 100%) !important;
+  filter: blur(80px) !important;
+  pointer-events: none !important;
+}
+
+body::after {
+  content: "" !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E") !important;
+  opacity: 0.04 !important;
+  mix-blend-mode: overlay !important;
+}
+
+/* Force sections transparent to show background */
+.programs-section, .philosophy-section, .problem-section, .included-section,
+.transformations-section, .testimonials-section, .faq-section, .cta-section,
+.approach-section, .founder-section, .timeline-section {
+  background-color: transparent !important;
+}
+
+/* Frosted Glass Cards */
+.service-card, .testimonial-card, .shred-features, .philosophy-nos,
+.faq-item, .timeline-item, .included-item {
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(106, 27, 154, 0.12) !important;
+  box-shadow: 0 8px 32px rgba(106, 27, 154, 0.08) !important;
+}
+
+/* High Contrast Typography for Light Background */
+h1, h2, h3, h4, .hero-title, .section-title, .cta-title, .stat-num, .timeline-title,
+.faq-question, .service-title, .pillar-title, .author-name, .founder-tag h3 {
+  color: #4A148C !important;
+  text-shadow: 0 1px 2px rgba(255,255,255,.08) !important;
+  font-weight: 800;
+}
+
+p, .hero-desc, .service-desc, .testimonial-text, .faq-answer, 
+.principle-content p, .pillar-content p, .timeline-content p, 
+.founder-text p, .founder-mission p, .cta-sub, .footer-about {
+  color: #54445E !important;
+  text-shadow: none !important;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+.service-card .service-title, .pillar-title, .timeline-title, .testimonial-card .author-name, .inc-text { color: #4A148C !important; }
+.service-card .service-desc, .pillar-content p, .principle-content p, .timeline-content p, .testimonial-card .testimonial-text { color: #5B4A65 !important; }
+
+/* Element-Specific Color Enforcements */
+.navbar { background: rgba(255, 255, 255, 0.35) !important; backdrop-filter: blur(14px) !important; border: 1px solid rgba(106, 27, 154, 0.12) !important; box-shadow: 0 4px 20px rgba(106, 27, 154, 0.05) !important; }
+.navbar.scrolled { background: rgba(255, 255, 255, 0.5) !important; }
+.nav-link, .mobile-link { color: #54445E !important; }
+.nav-link:hover, .mobile-link:hover { color: #6A1B9A !important; }
+.nav-link.active, .mobile-link.active { color: #8E44AD !important; }
+.hamburger span { background: #54445E !important; }
+
+.service-num, .pillar-num { color: #8E44AD !important; }
+.pillar-num { -webkit-text-stroke: 1px #8E44AD !important; color: transparent !important; }
+.faq-icon::before, .faq-icon::after { background: #8E44AD !important; }
+.faq-item.active .faq-icon::after { background: #6A1B9A !important; }
+.included-item:hover .inc-num { color: #6A1B9A !important; }
+
+.stat-num { color: #6A1B9A !important; }
+.stat-desc { color: #5E4B6D !important; }
+.timeline-line { background: rgba(106, 27, 154, 0.15) !important; }
+.timeline-item::after { border-color: #6A1B9A !important; background: #F7F3FB !important; }
+.timeline-item:hover::after { background: #8E44AD !important; }
+
+.form-group input, .form-group select { background: rgba(255, 255, 255, 0.5) !important; border: 1px solid rgba(106, 27, 154, 0.2) !important; color: #4A148C !important; }
+.form-group input::placeholder { color: rgba(94, 75, 109, 0.6) !important; }
+.form-group label { color: #7B5B93 !important; }
+.form-group select option { background: #F7EEFF !important; color: #4A148C !important; }
+
+.faq-list, .faq-item, .included-item, .pillar, .principle-item, .trans-stats, .stat-item, .timeline-line { border-color: rgba(106, 27, 154, 0.12) !important; }
+
+/* =========================================
+   9. Spacing & Polish
+   ========================================= */
+.programs-header, .trans-header, .testimonials-header, .timeline-header, .faq-header {
+  text-align: center;
+  margin-bottom: 80px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.programs-sub, .trans-header p, .testimonials-header p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #54445E;
+  margin-top: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-eyebrow, .mission-label, .shred-tag, .program-type, .stat-desc, 
+.timeline-num, .no-item, .footer-heading {
+  font-size: 14px !important;
+  letter-spacing: 0.15em !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  color: #6C5A75 !important;
+}
+
+p, .founder-text p, .hero-desc, .programs-sub, .trans-header p, .testimonials-header p {
+  font-size: clamp(1.1rem, 1vw + 0.5rem, 1.2rem) !important;
+  line-height: 1.8 !important;
+}
+
+.service-desc, .testimonial-text, .pillar-content p, .principle-content p, .problem-desc, .timeline-content p {
+  font-size: 1.1rem !important;
+  line-height: 1.7 !important;
+}
+
+.faq-answer { font-size: 1.2rem !important; line-height: 1.8 !important; padding: 0 30px 28px 0; }
+.inc-text { font-size: 1.2rem !important; letter-spacing: 0.02em; }
+.stat-desc, .timeline-num, .program-type, .mission-label, .shred-tag, .no-item, .author-program {
+  font-size: 15px !important;
+  letter-spacing: 0.12em !important;
+}
+
+h3, h4, .service-title, .pillar-title, .principle-content h3, .timeline-title {
+  font-size: clamp(1.30rem, 1.5vw, 1.5rem) !important;
+}
+
+.service-desc {
+  font-family: 'Montserrat', sans-serif !important;
+  text-align: left !important;
+}
+
+.included-item {
+  padding: 24px 32px !important;
+  border-radius: 12px !important;
+  margin-bottom: 16px !important;
+  border-bottom: none !important;
+}
+.included-item:hover { padding-left: 40px !important; }
+.inc-num { margin-right: 8px; }
+
+/* 3D Tilt Foundation */
+.service-card, .testimonial-card, .gallery-item {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+/* =========================================
+   10. Accessibility (Reduced Motion)
+   ========================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .hero-glow, .cta-glow, .philosophy-section::before { animation: none; }
+  .timeline-line::after { transition: none; }
+  .timeline-item::after { transform: scale(1); }
+  .timeline-item::before { display: none; }
+}
+
+
+/* =========================================
+   Premium Coverflow Carousel (3:4 Ratio)
+   ========================================= */
+.testimonials-section { position: relative; overflow: hidden; }
+
+.testimonials-glow {
+  position: absolute;
+  top: 10%; left: 50%;
+  transform: translateX(-50%);
+  width: 60%; height: 80%;
+  background: radial-gradient(circle, rgba(138, 63, 252, 0.12) 0%, transparent 70%);
+  z-index: 0; pointer-events: none;
+  animation: floatGlow 10s ease-in-out infinite;
+}
+
+.testimonials-header {
+  position: relative; z-index: 1;
+  text-align: center; margin-bottom: 60px;
+  max-width: 800px; margin-left: auto; margin-right: auto;
+}
+
+.coverflow-wrapper {
+  position: relative;
+  height: 550px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  z-index: 1;
+  margin-bottom: 80px;
+}
+
+.coverflow-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* 3:4 Ratio Cards (360px width / 480px height) */
+.cf-card {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 360px;
+  height: 480px;
+  margin-top: -240px;
+  margin-left: -180px;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(106, 27, 154, 0.15);
+  box-shadow: 0 10px 30px rgba(106, 27, 154, 0.1);
+  /* Dynamic variables set by JS */
+  transform: translateX(var(--tx, 0px)) translateZ(var(--tz, 0px)) scale(var(--scale, 1)) rotateY(var(--ry, 0deg));
+  opacity: var(--opacity, 0);
+  z-index: var(--z, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s ease;
+}
+
+.cf-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  pointer-events: none; /* Prevents dragging image */
+}
+
+/* Hover effect ONLY on center card */
+.cf-card.is-center:hover {
+  --scale: 1.03;
+  --shadow: 0 0 50px rgba(168, 85, 247, 0.5), 0 25px 60px rgba(106, 27, 154, 0.3);
+  box-shadow: var(--shadow);
+}
+
+/* Glassmorphism Arrows */
+.cf-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #4A148C;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(106, 27, 154, 0.1);
+}
+.cf-prev { left: 15%; }
+.cf-next { right: 15%; }
+.cf-arrow:hover {
+  background: linear-gradient(135deg, #6A1B9A, #8E44AD);
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.5);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Bottom CTA */
+.testimonials-cta {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 60px 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(106, 27, 154, 0.15);
+  max-width: 800px;
+  margin: 0 auto;
+}
+.testimonials-cta h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 32px; font-weight: 800; line-height: 1.3;
+  background: linear-gradient(135deg, #4A148C 0%, #8E44AD 50%, #4A148C 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* =========================================
+   Lightbox Modal
+   ========================================= */
+.t-lightbox {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.t-lightbox.active { opacity: 1; visibility: visible; }
+.t-lb-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8, 4, 16, 0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+.t-lb-content {
+  position: relative; z-index: 2;
+  max-width: 90vw; max-height: 85vh;
+  transform: scale(0.85); opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+.t-lightbox.active .t-lb-content { transform: scale(1); opacity: 1; }
+.t-lb-content img {
+  display: block; max-width: 90vw; max-height: 85vh;
+  width: auto; height: auto; object-fit: contain;
+  border-radius: 16px; box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+}
+.t-lb-close, .t-lb-nav {
+  position: absolute; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(106, 27, 154, 0.6);
+  backdrop-filter: blur(10px); color: #FFF;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 50%; cursor: pointer; line-height: 1;
+  transition: all 0.3s ease;
+}
+.t-lb-close { top: 24px; right: 24px; width: 48px; height: 48px; font-size: 30px; }
+.t-lb-nav { top: 50%; transform: translateY(-50%); width: 56px; height: 56px; font-size: 38px; }
+.t-lb-prev { left: 24px; }
+.t-lb-next { right: 24px; }
+.t-lb-close:hover, .t-lb-nav:hover {
+  background: linear-gradient(135deg, #6A1B9A, #8E44AD);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.5);
+}
+.t-lb-close:hover { transform: scale(1.1); }
+.t-lb-prev:hover { transform: translateY(-50%) scale(1.1); }
+.t-lb-next:hover { transform: translateY(-50%) scale(1.1); }
+
+/* Responsive 3:4 Ratio Adjustments */
+@media (max-width: 992px) {
+  .cf-card { width: 300px; height: 400px; margin-top: -200px; margin-left: -150px; }
+  .cf-prev { left: 5%; } .cf-next { right: 5%; }
+}
+@media (max-width: 768px) {
+  .coverflow-wrapper { height: 460px; }
+  .cf-card { width: 270px; height: 360px; margin-top: -180px; margin-left: -135px; }
+  .cf-arrow { width: 44px; height: 44px; font-size: 24px; }
+  .cf-prev { left: 2%; } .cf-next { right: 2%; }
+}
+@media (max-width: 480px) {
+  .testimonials-cta { padding: 40px 20px; }
+  .coverflow-wrapper { height: 420px; }
+  .cf-card { width: 240px; height: 320px; margin-top: -160px; margin-left: -120px; }
+}
