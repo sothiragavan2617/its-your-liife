@@ -616,3 +616,74 @@ h3, h4, .service-title, .pillar-title, .principle-content h3, .timeline-title {
   .coverflow-wrapper { height: 420px; }
   .cf-card { width: 240px; height: 320px; margin-top: -160px; margin-left: -120px; }
 }
+/* =========================================
+   Transformations Coverflow Carousel (1:1 Square Ratio)
+   ========================================= */
+.transformations-section { position: relative; overflow: hidden; }
+
+.trans-glow {
+  position: absolute;
+  top: 10%; left: 50%;
+  transform: translateX(-50%);
+  width: 60%; height: 80%;
+  background: radial-gradient(circle, rgba(138, 63, 252, 0.12) 0%, transparent 70%);
+  z-index: 0; pointer-events: none;
+  animation: floatGlow 10s ease-in-out infinite;
+}
+
+.trans-coverflow {
+  position: relative;
+  height: 560px; /* Adjusted wrapper height for square cards */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  z-index: 1;
+  margin-bottom: 80px;
+}
+
+/* 1:1 Square Ratio (480px width / 480px height) */
+.trans-cf-card {
+  width: 480px;
+  height: 480px;
+  margin-top: -240px;
+  margin-left: -240px;
+  border-radius: 24px; /* Premium large rounded corners */
+}
+
+/* Prevent image cropping completely */
+.trans-cf-card img {
+  object-fit: contain; 
+  background: rgba(247, 238, 255, 0.1); /* Subtle backdrop for transparent areas */
+}
+
+/* Update base transition to 0.6s for both carousels as requested */
+.cf-card {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s ease;
+}
+
+.trans-prev { left: 10%; }
+.trans-next { right: 10%; }
+
+/* Responsive 1:1 Square Adjustments */
+@media (max-width: 992px) {
+  /* 360px x 360px */
+  .trans-cf-card { width: 360px; height: 360px; margin-top: -180px; margin-left: -180px; }
+  .trans-prev { left: 2%; } .trans-next { right: 2%; }
+}
+@media (max-width: 768px) {
+  .trans-coverflow { height: 480px; }
+  /* Enlarged to 340px x 340px to fill more of the mobile screen */
+  .trans-cf-card { width: 340px; height: 340px; margin-top: -170px; margin-left: -170px; }
+  .trans-prev { left: 1%; } .trans-next { right: 1%; }
+}
+@media (max-width: 480px) {
+  .trans-coverflow { height: 460px; }
+  /* Enlarged to 320px x 320px for standard phones */
+  .trans-cf-card { width: 320px; height: 320px; margin-top: -160px; margin-left: -160px; }
+}
+@media (max-width: 380px) {
+  .trans-coverflow { height: 400px; }
+  /* Slightly smaller for very small phones (like iPhone SE) to prevent touching the edges */
+  .trans-cf-card { width: 280px; height: 280px; margin-top: -140px; margin-left: -140px; }
+}
